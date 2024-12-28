@@ -1,5 +1,8 @@
 # Changelog
 
+# Version 2.22.1
+* Fixed compatibility with shudnal's ConfigurationManager
+
 ## Version 2.22.0
 * Added `SynchronizationMode` attribute to allow mod authors to change how AdminOnly configs are handled. See https://valheim-modding.github.io/Jotunn/tutorials/config.html#admin-only-strictness (thx Searica)
 * Fixed mod detection for connection compatibility now use guid instead of name (thx Searica)
