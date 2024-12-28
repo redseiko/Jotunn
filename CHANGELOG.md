@@ -1,6 +1,7 @@
 # Changelog
 
-# Version 2.22.1
+# Version 2.23.0
+* Added ConfigFile BindConfig and BindConfigInOrder extensions for convenience (thx Searica)
 * Fixed compatibility with shudnal's ConfigurationManager
 
 ## Version 2.22.0
