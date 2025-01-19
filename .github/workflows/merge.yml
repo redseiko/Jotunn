@@ -27,19 +27,13 @@ jobs:
         run: echo "valheimversion=$(curl -s https://api.steamcmd.net/v1/info/896660 | jq -r ".data.\"896660\".depots.branches.public.buildid")" >> $GITHUB_OUTPUT
 
       - name: Setup .NET 8
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
 
-      # Install NuGet
-      - uses: nuget/setup-nuget@v1
-        name: Install NuGet
-
       # Install NuGet dependencies
       - name: Install NuGet dependencies
-        run: |
-          nuget restore JotunnLib.sln
-          dotnet restore JotunnLib/JotunnLib.csproj
+        run: dotnet restore JotunnLib/JotunnLib.csproj
 
       # Cache the results
       - name: Cache Valheim
@@ -74,13 +68,13 @@ jobs:
 
       # Gitversion
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.10.2
+        uses: gittools/actions/gitversion/setup@v3
         with:
           versionSpec: "5.x"
 
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.10.2
+        uses: gittools/actions/gitversion/execute@v3
         with:
           useConfigFile: true
           configFilePath: JotunnLib/GitVersion.yml
