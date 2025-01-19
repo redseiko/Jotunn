@@ -26,6 +26,11 @@ jobs:
           echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
           echo "VERSION_NUMBER=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_OUTPUT
 
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'
+
       - name: Install NuGet
         uses: nuget/setup-nuget@v1
 
@@ -37,15 +42,6 @@ jobs:
       - name: Restore tools
         run: |
           dotnet tool restore
-
-      - name: Get build commands
-        run: |
-          sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-          echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
-          wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-          sudo dpkg -i packages-microsoft-prod.deb
-          sudo apt-get update
-          sudo apt-get install -y mono-roslyn mono-complete mono-dbg msbuild unzip dirmngr dotnet-sdk-5.0 dotnet-runtime-5.0
 
       - name: Cache Valheim
         id: cachevalheim
