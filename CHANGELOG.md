@@ -1,6 +1,9 @@
 # Changelog
 
-# Version 2.23.0
+## Version 2.23.1
+* Fixed RPCs could be sent twice or to the wrong players if a specific target id is used
+
+## Version 2.23.0
 * Added ConfigFile BindConfig and BindConfigInOrder extensions for convenience (thx Searica)
 * Fixed compatibility with shudnal's ConfigurationManager
 

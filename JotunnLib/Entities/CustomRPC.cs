@@ -130,25 +130,27 @@ namespace Jotunn.Entities
         {
             if (!ZNet.instance)
             {
-                return Enumerable.Empty<object>().GetEnumerator();
+                yield break;
             }
 
-            List<ZNetPeer> peers = ZRoutedRpc.instance.m_peers;
-
-            if (target == ZRoutedRpc.instance.m_id || target == ZRoutedRpc.Everybody)
+            if (target == ZRoutedRpc.instance.m_id)
             {
                 byte[] originalData = package.GetArray();
                 ZPackage jotunnpackage = new ZPackage();
                 jotunnpackage.Write(originalData);
                 jotunnpackage.SetPos(0);
                 ZNet.instance.StartCoroutine(HandlePackageRoutine(ZRoutedRpc.instance.m_id, jotunnpackage, JOTUNN_PACKAGE));
+                yield break;
             }
-            else
+
+            List<ZNetPeer> peers = ZRoutedRpc.instance.m_peers;
+
+            if (target != ZRoutedRpc.Everybody)
             {
                 peers = peers.Where(p => p.m_uid == target).ToList();
             }
 
-            return SendPackageRoutine(peers, package);
+            yield return SendPackageRoutine(peers, package);
         }
 
         /// <summary>
@@ -172,6 +174,7 @@ namespace Jotunn.Entities
                 ZPackage jotunnpackage = new ZPackage();
                 jotunnpackage.Write(JOTUNN_PACKAGE);
                 jotunnpackage.Write(originalData);
+                jotunnpackage.SetPos(0);
                 package = jotunnpackage;
 
                 if (package.Size() > CompressMinSize)
