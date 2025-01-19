@@ -44,28 +44,29 @@ jobs:
         run: |
           wget -O bepinex.zip "https://thunderstore.io/package/download/denikson/BepInExPack_Valheim/5.4.2202/"
           unzip bepinex.zip -d ~/BepInExRaw
-          steamcmd +login anonymous +force_install_dir ~/VHINSTALL +app_update 896660 validate +exit
+          steamcmd +force_install_dir ~/VHINSTALL +login anonymous +app_update 896660 validate +exit
           mv ~/VHINSTALL/valheim_server_Data/ ~/VHINSTALL/valheim_Data/
           mv ~/BepInExRaw/BepInExPack_Valheim/* ~/VHINSTALL/
 
-      - name: remove old hash, publicized dlls and mmhook dlls
+      - name: Remove old publicized dlls from cache
+        if: steps.cachevalheim.outputs.cache-hit != 'true'
         run: |
+          rm -rf ~/VHINSTALL/valheim_Data/Managed/publicized_assemblies
           rm -rf ~/VHINSTALL/valheim_server_Data/Managed/publicized_assemblies
-          rm -rf ~/VHINSTALL/BepInEx/plugins/MMHOOK
 
       - name: Set references to DLLs
         run: |
           echo "<?xml version=\"1.0\" encoding=\"utf-8\"?><Project ToolsVersion=\"Current\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\"><PropertyGroup><VALHEIM_INSTALL>$HOME/VHINSTALL/</VALHEIM_INSTALL></PropertyGroup></Project>" > Environment.props
 
-      # Gitvers
+      # Gitversion
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v3.1.2
+        uses: gittools/actions/gitversion/setup@v3
         with:
           versionSpec: "5.x"
 
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v3.1.2
+        uses: gittools/actions/gitversion/execute@v3
         with:
           useConfigFile: true
           configFilePath: JotunnLib/GitVersion.yml

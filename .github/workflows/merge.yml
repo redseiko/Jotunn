@@ -57,10 +57,11 @@ jobs:
           mv ~/VHINSTALL/valheim_server_Data/ ~/VHINSTALL/valheim_Data/
           mv ~/BepInExRaw/BepInExPack_Valheim/* ~/VHINSTALL/
 
-      - name: remove old hash, publicized dlls and mmhook dlls
+      - name: Remove old publicized dlls from cache
+        if: steps.cachevalheim.outputs.cache-hit != 'true'
         run: |
+          rm -rf ~/VHINSTALL/valheim_Data/Managed/publicized_assemblies
           rm -rf ~/VHINSTALL/valheim_server_Data/Managed/publicized_assemblies
-          rm -rf ~/VHINSTALL/BepInEx/plugins/MMHOOK
 
       - name: Set references to DLLs
         run: |

@@ -9,7 +9,7 @@ jobs:
   build_release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -58,12 +58,11 @@ jobs:
           mv ~/VHINSTALL/valheim_server_Data/ ~/VHINSTALL/valheim_Data/
           mv ~/BepInExRaw/BepInExPack_Valheim/* ~/VHINSTALL/
 
-      - name: Remove old publicized and mmhook dlls from cache
+      - name: Remove old publicized dlls from cache
         if: steps.cachevalheim.outputs.cache-hit != 'true'
         run: |
           rm -rf ~/VHINSTALL/valheim_Data/Managed/publicized_assemblies
           rm -rf ~/VHINSTALL/valheim_server_Data/Managed/publicized_assemblies
-          rm -rf ~/VHINSTALL/BepInEx/plugins/MMHOOK
 
       - name: Create Environment.props
         run: |
