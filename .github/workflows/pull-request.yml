@@ -86,7 +86,7 @@ jobs:
       # Build DLLs
       - name: Build solution
         run: |
-          msbuild JotunnLib.sln /p:Configuration=Debug
+          dotnet build JotunnLib.sln --configuration Debug
 
       # Upload artifact
       - uses: actions/upload-artifact@v4
